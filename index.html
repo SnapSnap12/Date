@@ -491,8 +491,6 @@
         },
         body: JSON.stringify(payload)
       })
-      .then(response => response.json())
-      .then(data => { console.log('E-Mail gesendet:', data); })
       .catch(error => { console.error('E-Mail-Fehler:', error); });
     }
 
@@ -517,8 +515,6 @@
         },
         body: JSON.stringify(payload)
       })
-      .then(response => response.json())
-      .then(data => console.log('E-Mail gesendet:', data))
       .catch(error => console.error('E-Mail-Fehler:', error));
     }
 
