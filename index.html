@@ -288,6 +288,32 @@
           </div>
         </div>
 
+        <div class="step" id="stepKino">
+          <div class="progress">Schritt 2b</div>
+          <h2>🎬 Normales Kino oder Autokino?</h2>
+          <div class="options">
+            <button class="option" onclick="chooseKino(this,'🎥 Normales Kino')"><strong>🎥 Normales Kino</strong><span>Gemütlich im Kinosaal mit Popcorn. 🍿</span></button>
+            <button class="option" onclick="chooseKino(this,'🚗 Autokino')"><strong>🚗 Autokino</strong><span>Filmabend unterm Sternenhimmel. ✨</span></button>
+          </div>
+          <div class="buttons">
+            <button class="back" onclick="go(2)">← Zurück</button>
+            <button class="next" id="nextKino" disabled onclick="go('KinoFilm')">Weiter →</button>
+          </div>
+        </div>
+
+        <div class="step" id="stepKinoFilm">
+          <div class="progress">Schritt 2c</div>
+          <h2>🍿 Welche Film-Art möchtest du?</h2>
+          <div class="options">
+            <button class="option" onclick="chooseFilm(this,'😂 Komödie')"><strong>😂 Komödie</strong><span>Zusammen lachen. 😄</span></button>
+            <button class="option" onclick="chooseFilm(this,'🎞️ Andere Film-Art')"><strong>🎞️ Andere Film-Art</strong><span>Wir suchen was Schönes aus. 🎬</span></button>
+          </div>
+          <div class="buttons">
+            <button class="back" onclick="go('Kino')">← Zurück</button>
+            <button class="next" id="nextFilm" disabled onclick="finishKino()">Weiter →</button>
+          </div>
+        </div>
+
         <div class="step" id="step3">
           <div class="progress">Schritt 3</div>
           <h2>Wann hast du Zeit?</h2>
@@ -353,17 +379,20 @@
     function checkTime() { document.getElementById('finishBtn').disabled = !document.getElementById('time').value; }
 
     function goToDate() {
-      if (activity === '🎬 Kino') {
-        const normal = confirm('🎬 Möchtest du normales Kino wählen?\n\nOK = 🎥 Normales Kino\nAbbrechen = 🚗 Autokino');
-        cinemaType = normal ? '🎥 Normales Kino' : '🚗 Autokino';
-
-        const comedy = confirm('🍿 Welche Film-Art möchtest du?\n\nOK = 😂 Komödie\nAbbrechen = 🎞️ Eine andere Film-Art');
-        filmType = comedy ? '😂 Komödie' : '🎞️ Andere Film-Art';
-
-        activity = `🎬 Kino (${cinemaType}, ${filmType})`;
+      if (activity.startsWith('🎬 Kino')) {
+        activity = '🎬 Kino';
+        cinemaType = ""; filmType = "";
+        document.querySelectorAll('#stepKino .option, #stepKinoFilm .option').forEach(x => x.classList.remove('selected'));
+        document.getElementById('nextKino').disabled = true;
+        document.getElementById('nextFilm').disabled = true;
+        go('Kino');
+        return;
       }
       go(3);
     }
+    function chooseKino(el, value) { document.querySelectorAll('#stepKino .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); cinemaType = value; document.getElementById('nextKino').disabled = false; }
+    function chooseFilm(el, value) { document.querySelectorAll('#stepKinoFilm .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); filmType = value; document.getElementById('nextFilm').disabled = false; }
+    function finishKino() { activity = `🎬 Kino (${cinemaType}, ${filmType})`; go(3); }
 
     function sendMaybeNotification() {
       const recipient = 'd.preisinger@online.de';
