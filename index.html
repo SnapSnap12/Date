@@ -227,13 +227,13 @@
       font-size: 17px;
     }
 
-    .no {
+    .maybe {
       text-align: center;
       color: var(--muted);
       line-height: 1.7;
     }
 
-    .no h2 {
+    .maybe h2 {
       margin-bottom: 12px;
     }
 
@@ -258,14 +258,14 @@
         </p>
 
         <div class="step active" id="step1">
-          <div class="progress">Schritt 1 von 4</div>
+          <div class="progress">Schritt 1 von 2</div>
           <h2>Hast du Lust auf ein Date?</h2>
           <div class="options">
             <button class="option" onclick="selectYes(this)">
               <strong>Ja 😊🥰</strong>
               <span>Sehr gerne!</span>
             </button>
-            <button class="option" onclick="selectNo(this)">
+            <button class="option" onclick="selectMaybe(this)">
               <strong>Vielleicht 😊</strong>
               <span>Lass mich noch überlegen.</span>
             </button>
@@ -276,7 +276,7 @@
         </div>
 
         <div class="step" id="step2">
-          <div class="progress">Schritt 2 von 4</div>
+          <div class="progress">Schritt 2 von 2</div>
           <h2>Was möchtest du machen?</h2>
           <div class="options">
             <button class="option" onclick="choose(this,'🎬 Kino')"><strong>🎬 Kino</strong><span>Gemütlich einen Film schauen.</span></button>
@@ -286,12 +286,12 @@
           </div>
           <div class="buttons">
             <button class="back" onclick="go(1)">← Zurück</button>
-            <button class="next" id="next2" disabled onclick="go(3)">Weiter →</button>
+            <button class="next" id="next2" disabled onclick="goToDate()">Weiter →</button>
           </div>
         </div>
 
         <div class="step" id="step3">
-          <div class="progress">Schritt 3 von 4</div>
+          <div class="progress">Schritt 3 von 3</div>
           <h2>Wann hast du Zeit?</h2>
           <input type="date" id="date" onchange="checkDate()" />
           <div class="buttons">
@@ -301,7 +301,7 @@
         </div>
 
         <div class="step" id="step4">
-          <div class="progress">Schritt 4 von 4</div>
+          <div class="progress">Schritt 4 von 3</div>
           <h2>Wann ungefähr?</h2>
           <select id="time" onchange="checkTime()">
             <option value="">Bitte auswählen</option>
@@ -318,10 +318,11 @@
         </div>
       </div>
 
-      <div id="noPage" class="step no">
+      <div id="maybePage" class="step maybe">
         <div class="heart">😊</div>
-        <h2>Kein Problem, Emmy.</h2>
-        <p>Dann lassen wir die Entscheidung einfach noch offen. 😊</p>
+        <h2>Du hast "Vielleicht" angeklickt</h2>
+        <p>Okay, ich nehme deine Antwort zur Kenntnis. 😊</p>
+        <p style="font-size: 14px; color: #999;">Ich habe eine Benachrichtigung bekommen - danke, dass du mir Bescheid gibst!</p>
         <button class="next" onclick="restart()">Nochmal</button>
       </div>
 
@@ -357,12 +358,15 @@
       document.getElementById('next1').disabled = false;
     }
 
-    function selectNo(el) {
+    function selectMaybe(el) {
       document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
       dateAnswer = false;
       document.getElementById('next1').disabled = false;
-      document.getElementById('next1').onclick = function () { show('noPage'); };
+      // Sofort E-Mail senden für "Vielleicht"
+      document.getElementById('next1').onclick = function () { 
+        sendMaybeNotification();
+      };
     }
 
     function choose(el, value) {
@@ -380,11 +384,43 @@
       document.getElementById('finishBtn').disabled = !document.getElementById('time').value;
     }
 
+    function goToDate() {
+      go(3);
+    }
+
+    function sendMaybeNotification() {
+      const recipient = 'd.preisinger@online.de';
+      const payload = {
+        _subject: 'Emmy hat "Vielleicht" angeklickt! 💭',
+        _template: 'table',
+        _captcha: 'false',
+        message: 'Emmy hat die Date-Anfrage erhalten und überlegt noch - Antwort: Vielleicht 😊'
+      };
+
+      fetch('https://formsubmit.co/ajax/' + recipient, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('E-Mail gesendet:', data);
+        show('maybePage');
+      })
+      .catch(error => {
+        console.error('E-Mail-Fehler:', error);
+        show('maybePage');
+      });
+    }
+
     function sendEmailNotification(dateText, timeText) {
       const recipient = 'd.preisinger@online.de';
       const answerText = dateAnswer ? 'Ja' : 'Vielleicht';
       const payload = {
-        _subject: 'Neue Date-Antwort!',
+        _subject: 'Neue Date-Antwort! 🎉',
         _template: 'table',
         _captcha: 'false',
         name: answerText,
