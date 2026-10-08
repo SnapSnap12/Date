@@ -129,8 +129,8 @@ input,select{
       <option>Ganz spontan 😊</option>
     </select>
     <div class="notification-option">
-      <input type="checkbox" id="notifCheckbox">
-      <label for="notifCheckbox">Benachrichtigung erhalten 🔔</label>
+      <input type="checkbox" id="emailCheckbox" checked>
+      <label for="emailCheckbox">E-Mail-Benachrichtigung senden 📧</label>
     </div>
     <div class="buttons">
       <button class="back" onclick="go(3)">← Zurück</button>
@@ -157,6 +157,17 @@ input,select{
 <p class="small">Eine kleine Frage von mir an dich 😊</p>
 </div>
 </div>
+
+<form id="notifyForm" action="https://formsubmit.co/DEINE_EMAIL@DEINER_DOMAIN.de" method="POST" style="display:none">
+  <input type="hidden" name="_subject" value="Neue Date-Antwort!">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="table">
+  <input type="hidden" name="name" id="emailName">
+  <input type="hidden" name="activity" id="emailActivity">
+  <input type="hidden" name="date" id="emailDate">
+  <input type="hidden" name="time" id="emailTime">
+  <input type="hidden" name="message" id="emailMessage">
+</form>
 
 <script>
 let dateAnswer=false, activity="";
@@ -185,19 +196,18 @@ function choose(el,value){
 function checkDate(){document.getElementById('next3').disabled=!document.getElementById('date').value}
 function checkTime(){document.getElementById('finishBtn').disabled=!document.getElementById('time').value}
 
-function requestNotificationPermission(){
-  if('Notification' in window && Notification.permission === 'default'){
-    Notification.requestPermission();
-  }
-}
+function sendEmailNotification(dateText, timeText){
+  const form=document.getElementById('notifyForm');
+  const nameValue = dateAnswer ? 'Ja' : 'Vielleicht';
+  const message = `Antwort: ${nameValue}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}`;
 
-function sendNotification(activity, date, time){
-  if('Notification' in window && Notification.permission === 'granted'){
-    new Notification('Date bestätigt! 😊', {
-      body: `${activity} am ${date} ${time}`,
-      icon: '😊'
-    });
-  }
+  document.getElementById('emailName').value = nameValue;
+  document.getElementById('emailActivity').value = activity;
+  document.getElementById('emailDate').value = dateText;
+  document.getElementById('emailTime').value = timeText;
+  document.getElementById('emailMessage').value = message;
+
+  form.submit();
 }
 
 function finish(){
@@ -205,32 +215,22 @@ function finish(){
   const d=new Date(raw+'T12:00:00');
   const formatted=d.toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
   const time=document.getElementById('time').value;
-  const notifEnabled=document.getElementById('notifCheckbox').checked;
+  const emailEnabled=document.getElementById('emailCheckbox').checked;
   
   document.getElementById('summary').innerHTML=
     '<strong>Unsere Auswahl:</strong><br>'+
     activity+'<br>'+
     '📅 '+formatted+'<br>'+
     '⏰ '+time;
-  
-  if(notifEnabled){
-    if('Notification' in window && Notification.permission === 'granted'){
-      sendNotification(activity, formatted, time);
-    } else if('Notification' in window && Notification.permission === 'default'){
-      Notification.requestPermission().then(permission=>{
-        if(permission === 'granted'){
-          sendNotification(activity, formatted, time);
-        }
-      });
-    }
+
+  if(emailEnabled){
+    sendEmailNotification(formatted, time);
   }
   
   show('result');
 }
 
 function restart(){location.reload()}
-
-window.addEventListener('load', requestNotificationPermission);
 </script>
 </body>
 </html>
