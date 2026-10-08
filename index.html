@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eine kleine Überraschung 😊</title>
+  <title>Ein Date für Emmy 😊</title>
   <style>
     :root {
       --bg: #fdf2f5;
@@ -16,46 +16,239 @@
       --line: #e8dfe3;
       --shadow: 0 18px 40px rgba(184, 93, 117, 0.12);
     }
+
     * { box-sizing: border-box; }
+
     html, body {
-      margin: 0; padding: 0; min-height: 100%; font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #f9edf1 0%, #f6f1f4 100%); color: var(--text);
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #f9edf1 0%, #f6f1f4 100%);
+      color: var(--text);
     }
-    body { display: flex; align-items: center; justify-content: center; padding: 28px 16px; }
-    .container { width: min(620px, 100%); }
-    .card { background: var(--card); border-radius: 26px; padding: 30px 28px 26px; box-shadow: var(--shadow); border: 1px solid rgba(217, 93, 125, 0.06); }
-    .heart { text-align: center; font-size: 46px; margin-bottom: 8px; animation: pulse 1.8s ease-in-out infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
-    h1 { margin: 8px 0 12px; text-align: center; font-size: clamp(30px, 4vw, 42px); line-height: 1.1; }
-    h2 { margin: 0 0 18px; font-size: clamp(22px, 3vw, 28px); line-height: 1.25; }
-    .intro { text-align: center; color: var(--muted); font-size: 18px; line-height: 1.55; margin-bottom: 28px; }
-    .step { display: none; }
-    .step.active { display: block; }
-    .progress { text-align: center; color: #8e7d83; font-size: 13px; letter-spacing: 0.04em; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; }
-    .options { display: grid; gap: 12px; }
-    .option { width: 100%; background: #fff; border: 2px solid var(--line); border-radius: 16px; padding: 18px 18px; text-align: left; cursor: pointer; transition: all 0.2s ease; font-size: 17px; color: var(--text); }
-    .option:hover { transform: translateY(-1px); border-color: #df9bb0; box-shadow: 0 8px 18px rgba(217, 93, 125, 0.08); }
-    .option.selected { border-color: var(--pink); background: var(--pink-soft); box-shadow: 0 10px 20px rgba(217, 93, 125, 0.08); }
-    .option.maybe-shrink { transform: scale(0.96); opacity: 0.9; }
-    .option strong { display: block; margin-bottom: 5px; font-size: 18px; }
-    .option span { display: block; color: #7a6d72; font-size: 14px; }
-    .buttons { display: flex; gap: 12px; margin-top: 24px; }
-    button { font: inherit; }
-    .next, .back { flex: 1; border: none; border-radius: 14px; padding: 15px 18px; font-size: 16px; font-weight: 700; cursor: pointer; transition: transform 0.2s ease, opacity 0.2s ease; }
-    .next { background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%); color: white; }
-    .back { background: #f2f2f2; color: #333; }
-    .next:hover, .back:hover { transform: translateY(-1px); }
-    .next:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-    input, select { width: 100%; border: 2px solid var(--line); border-radius: 14px; padding: 15px 16px; font-size: 16px; background: white; color: var(--text); outline: none; }
-    input:focus, select:focus { border-color: #d38da1; box-shadow: 0 0 0 4px rgba(217, 93, 125, 0.08); }
-    .final { text-align: center; }
-    .final h2 { font-size: clamp(28px, 4vw, 38px); margin-bottom: 10px; }
-    .final p { color: var(--muted); margin-bottom: 18px; font-size: 17px; }
-    .summary { background: linear-gradient(135deg, #fff8fa 0%, #fff2f6 100%); border: 1px solid #f2dfe7; border-radius: 16px; padding: 18px 18px; text-align: left; line-height: 1.75; margin: 18px 0 20px; font-size: 16px; }
-    .summary strong { font-size: 17px; }
-    .maybe { text-align: center; color: var(--muted); line-height: 1.7; }
-    .maybe h2 { margin-bottom: 12px; }
-    .small { text-align: center; color: #9d8b92; font-size: 12px; margin-top: 22px; letter-spacing: 0.04em; }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px;
+    }
+
+    .container {
+      width: min(620px, 100%);
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 26px;
+      padding: 30px 28px 26px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(217, 93, 125, 0.06);
+    }
+
+    .heart {
+      text-align: center;
+      font-size: 46px;
+      margin-bottom: 8px;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    h1 {
+      margin: 8px 0 12px;
+      text-align: center;
+      font-size: clamp(30px, 4vw, 42px);
+      line-height: 1.1;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(22px, 3vw, 28px);
+      line-height: 1.25;
+    }
+
+    .intro {
+      text-align: center;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .progress {
+      text-align: center;
+      color: #8e7d83;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      width: 100%;
+      background: #fff;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 18px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 17px;
+      color: var(--text);
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: #df9bb0;
+      box-shadow: 0 8px 18px rgba(217, 93, 125, 0.08);
+    }
+
+    .option.selected {
+      border-color: var(--pink);
+      background: var(--pink-soft);
+      box-shadow: 0 10px 20px rgba(217, 93, 125, 0.08);
+    }
+
+    .option.maybe-shrink {
+      transform: scale(0.96);
+      opacity: 0.9;
+    }
+
+    .option strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
+
+    .option span {
+      display: block;
+      color: #7a6d72;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .next, .back {
+      flex: 1;
+      border: none;
+      border-radius: 14px;
+      padding: 15px 18px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .next {
+      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
+      color: white;
+    }
+
+    .back {
+      background: #f2f2f2;
+      color: #333;
+    }
+
+    .next:hover, .back:hover {
+      transform: translateY(-1px);
+    }
+
+    .next:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    input, select {
+      width: 100%;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 15px 16px;
+      font-size: 16px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #d38da1;
+      box-shadow: 0 0 0 4px rgba(217, 93, 125, 0.08);
+    }
+
+    .final {
+      text-align: center;
+    }
+
+    .final h2 {
+      font-size: clamp(28px, 4vw, 38px);
+      margin-bottom: 10px;
+    }
+
+    .final p {
+      color: var(--muted);
+      margin-bottom: 18px;
+      font-size: 17px;
+    }
+
+    .summary {
+      background: linear-gradient(135deg, #fff8fa 0%, #fff2f6 100%);
+      border: 1px solid #f2dfe7;
+      border-radius: 16px;
+      padding: 18px 18px;
+      text-align: left;
+      line-height: 1.75;
+      margin: 18px 0 20px;
+      font-size: 16px;
+    }
+
+    .summary strong {
+      font-size: 17px;
+    }
+
+    .maybe {
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .maybe h2 {
+      margin-bottom: 12px;
+    }
+
+    .small {
+      text-align: center;
+      color: #9d8b92;
+      font-size: 12px;
+      margin-top: 22px;
+      letter-spacing: 0.04em;
+    }
   </style>
 </head>
 <body>
