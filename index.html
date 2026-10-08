@@ -145,6 +145,53 @@
       font-size: 14px;
     }
 
+    .sub-options {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .sub-options.show {
+      display: grid;
+    }
+
+    .sub-option {
+      width: 100%;
+      background: #fff;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .sub-option:hover {
+      transform: translateY(-1px);
+      border-color: #df9bb0;
+      box-shadow: 0 6px 14px rgba(217, 93, 125, 0.08);
+    }
+
+    .sub-option.selected {
+      border-color: var(--pink);
+      background: var(--pink-soft);
+    }
+
+    .sub-option strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .sub-option span {
+      display: block;
+      color: #7a6d72;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
     .buttons {
       display: flex;
       gap: 12px;
@@ -275,7 +322,21 @@
           <div class="progress">Schritt 2</div>
           <h2>Was möchtest du machen?</h2>
           <div class="options">
-            <button class="option" onclick="choose(this,'🎬 Kino')"><strong>🎬 Kino</strong><span>Normales Kino oder Autokino?</span></button>
+            <div>
+              <button class="option" onclick="selectCinema(this)"><strong>🎬 Kino</strong><span>Normales Kino oder Autokino?</span></button>
+              <div class="sub-options" id="cinemaOptions">
+                <button class="sub-option" onclick="chooseCinemaType(this, '🎥 Normales Kino', 'filmOptions1')"><strong>🎥 Normales Kino</strong></button>
+                <button class="sub-option" onclick="chooseCinemaType(this, '🚗 Autokino', 'filmOptions2')"><strong>🚗 Autokino</strong></button>
+              </div>
+              <div class="sub-options" id="filmOptions1">
+                <button class="sub-option" onclick="chooseFilmType(this, '🎬 Kino (🎥 Normales Kino, 😂 Komödie)')"><strong>😂 Komödie</strong></button>
+                <button class="sub-option" onclick="chooseFilmType(this, '🎬 Kino (🎥 Normales Kino, 🎞️ Andere Film-Art)')"><strong>🎞️ Andere</strong></button>
+              </div>
+              <div class="sub-options" id="filmOptions2">
+                <button class="sub-option" onclick="chooseFilmType(this, '🎬 Kino (🚗 Autokino, 😂 Komödie)')"><strong>😂 Komödie</strong></button>
+                <button class="sub-option" onclick="chooseFilmType(this, '🎬 Kino (🚗 Autokino, 🎞️ Andere Film-Art)')"><strong>🎞️ Andere</strong></button>
+              </div>
+            </div>
             <button class="option" onclick="choose(this,'🍽️ Abendessen')"><strong>🍽️ Abendessen</strong><span>Gemeinsam essen gehen und genießen.</span></button>
             <button class="option" onclick="choose(this,'🎳 Bowling')"><strong>🎳 Bowling</strong><span>Ein bisschen Spaß und Wettbewerb.</span></button>
             <button class="option" onclick="choose(this,'🏎️ Go-Kart fahren')"><strong>🏎️ Go-Kart fahren</strong><span>Adrenalin und Abenteuer auf der Strecke.</span></button>
@@ -284,7 +345,7 @@
           </div>
           <div class="buttons">
             <button class="back" onclick="go(1)">← Zurück</button>
-            <button class="next" id="next2" disabled onclick="goToDate()">Weiter →</button>
+            <button class="next" id="next2" disabled onclick="go(3)">Weiter →</button>
           </div>
         </div>
 
@@ -338,37 +399,85 @@
   <script>
     let dateAnswer = false;
     let activity = "";
-    let cinemaType = "";
-    let filmType = "";
 
     function show(id) {
       document.querySelectorAll('.step').forEach(x => x.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
+
     function go(n) { show('step' + n); }
-    function selectYes(el) { document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); dateAnswer = true; document.getElementById('next1').disabled = false; }
-    function selectMaybe(el) { document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); el.classList.add('maybe-shrink'); dateAnswer = false; document.getElementById('next1').disabled = false; sendMaybeNotification(); }
-    function choose(el, value) { document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); activity = value; document.getElementById('next2').disabled = false; }
-    function checkDate() { document.getElementById('next3').disabled = !document.getElementById('date').value; }
-    function checkTime() { document.getElementById('finishBtn').disabled = !document.getElementById('time').value; }
 
-    function goToDate() {
-      if (activity === '🎬 Kino') {
-        const normal = confirm('🎬 Möchtest du normales Kino wählen?\n\nOK = 🎥 Normales Kino\nAbbrechen = 🚗 Autokino');
-        cinemaType = normal ? '🎥 Normales Kino' : '🚗 Autokino';
+    function selectYes(el) {
+      document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      dateAnswer = true;
+      document.getElementById('next1').disabled = false;
+    }
 
-        const comedy = confirm('🍿 Welche Film-Art möchtest du?\n\nOK = 😂 Komödie\nAbbrechen = 🎞️ Eine andere Film-Art');
-        filmType = comedy ? '😂 Komödie' : '🎞️ Andere Film-Art';
+    function selectMaybe(el) {
+      document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      el.classList.add('maybe-shrink');
+      dateAnswer = false;
+      document.getElementById('next1').disabled = false;
+      setTimeout(() => sendMaybeNotification(), 500);
+    }
 
-        activity = `🎬 Kino (${cinemaType}, ${filmType})`;
-      }
-      go(3);
+    function selectCinema(el) {
+      document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('cinemaOptions').classList.add('show');
+      document.getElementById('filmOptions1').classList.remove('show');
+      document.getElementById('filmOptions2').classList.remove('show');
+    }
+
+    function chooseCinemaType(el, cinemaType, filmOptionsId) {
+      document.querySelectorAll('#cinemaOptions .sub-option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('filmOptions1').classList.remove('show');
+      document.getElementById('filmOptions2').classList.remove('show');
+      document.getElementById(filmOptionsId).classList.add('show');
+    }
+
+    function chooseFilmType(el, value) {
+      document.querySelectorAll('.sub-options .sub-option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      activity = value;
+      document.getElementById('next2').disabled = false;
+    }
+
+    function choose(el, value) {
+      document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
+      document.querySelectorAll('#step2 .sub-options').forEach(x => x.classList.remove('show'));
+      el.classList.add('selected');
+      activity = value;
+      document.getElementById('next2').disabled = false;
+    }
+
+    function checkDate() {
+      document.getElementById('next3').disabled = !document.getElementById('date').value;
+    }
+
+    function checkTime() {
+      document.getElementById('finishBtn').disabled = !document.getElementById('time').value;
     }
 
     function sendMaybeNotification() {
       const recipient = 'd.preisinger@online.de';
-      const payload = { _subject: 'Emmy hat "Vielleicht" angeklickt! 💭', _template: 'table', _captcha: 'false', message: 'Emmy hat die Date-Anfrage erhalten und überlegt noch - Antwort: Vielleicht' };
-      fetch('https://formsubmit.co/ajax/' + recipient, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload) })
+      const payload = {
+        _subject: 'Emmy hat "Vielleicht" angeklickt! 💭',
+        _template: 'table',
+        _captcha: 'false',
+        message: 'Emmy hat die Date-Anfrage erhalten und überlegt noch - Antwort: Vielleicht'
+      };
+      fetch('https://formsubmit.co/ajax/' + recipient, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
       .then(response => response.json())
       .then(data => { console.log('E-Mail gesendet:', data); show('maybePage'); })
       .catch(error => { console.error('E-Mail-Fehler:', error); show('maybePage'); });
@@ -377,8 +486,24 @@
     function sendEmailNotification(dateText, timeText) {
       const recipient = 'd.preisinger@online.de';
       const answerText = dateAnswer ? 'Ja' : 'Vielleicht';
-      const payload = { _subject: 'Neue Date-Antwort! 🎉', _template: 'table', _captcha: 'false', name: answerText, activity: activity, date: dateText, time: timeText, message: `Neue Date-Antwort\nName: ${answerText}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}` };
-      fetch('https://formsubmit.co/ajax/' + recipient, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload) })
+      const payload = {
+        _subject: 'Neue Date-Antwort! 🎉',
+        _template: 'table',
+        _captcha: 'false',
+        name: answerText,
+        activity: activity,
+        date: dateText,
+        time: timeText,
+        message: `Neue Date-Antwort\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}`
+      };
+      fetch('https://formsubmit.co/ajax/' + recipient, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
       .then(response => response.json())
       .then(data => console.log('E-Mail gesendet:', data))
       .catch(error => console.error('E-Mail-Fehler:', error));
