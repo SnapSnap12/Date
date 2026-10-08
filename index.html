@@ -267,7 +267,7 @@
             <button class="option maybe-button" onclick="selectMaybe(this)"><strong>Vielleicht 😊</strong><span>Lass mich noch überlegen.</span></button>
           </div>
           <div class="buttons">
-            <button class="next" id="next1" disabled onclick="go(2)">Weiter →</button>
+            <button class="next" id="next1" disabled onclick="show('step2')">Weiter →</button>
           </div>
         </div>
 
@@ -283,8 +283,8 @@
             <button class="option" onclick="choose(this,'🌅 Sonnenuntergang anschauen')"><strong>🌅 Sonnenuntergang anschauen</strong><span>Gemeinsam den Sonnenuntergang anschauen.</span></button>
           </div>
           <div class="buttons">
-            <button class="back" onclick="go(1)">← Zurück</button>
-            <button class="next" id="next2" disabled onclick="go(3)">Weiter →</button>
+            <button class="back" onclick="show('step1')">← Zurück</button>
+            <button class="next" id="next2" disabled onclick="show('step3')">Weiter →</button>
           </div>
         </div>
 
@@ -296,8 +296,8 @@
             <button class="option" onclick="chooseCinemaType(this, '🚗 Autokino')"><strong>🚗 Autokino</strong><span>Gemütlich im Auto schauen</span></button>
           </div>
           <div class="buttons">
-            <button class="back" onclick="go(2)">← Zurück</button>
-            <button class="next" id="next2a" disabled onclick="go(2)">Weiter →</button>
+            <button class="back" onclick="show('step2')">← Zurück</button>
+            <button class="next" id="next2a" disabled onclick="show('step2b')">Weiter →</button>
           </div>
         </div>
 
@@ -309,8 +309,8 @@
             <button class="option" onclick="chooseFilmType(this, '🎞️ Andere Film-Art')"><strong>🎞️ Andere Film-Art</strong><span>Drama, Action, Horror oder was anderes</span></button>
           </div>
           <div class="buttons">
-            <button class="back" onclick="go(2)">← Zurück</button>
-            <button class="next" id="next2b" disabled onclick="go(3)">Weiter →</button>
+            <button class="back" onclick="show('step2a')">← Zurück</button>
+            <button class="next" id="next2b" disabled onclick="show('step3')">Weiter →</button>
           </div>
         </div>
 
@@ -319,8 +319,8 @@
           <h2>Wann hast du Zeit?</h2>
           <input type="date" id="date" onchange="checkDate()" />
           <div class="buttons">
-            <button class="back" onclick="go(2)">← Zurück</button>
-            <button class="next" id="next3" disabled onclick="go(4)">Weiter →</button>
+            <button class="back" onclick="goBack()">← Zurück</button>
+            <button class="next" id="next3" disabled onclick="show('step4')">Weiter →</button>
           </div>
         </div>
 
@@ -335,7 +335,7 @@
             <option>Ganz spontan 😊</option>
           </select>
           <div class="buttons">
-            <button class="back" onclick="go(3)">← Zurück</button>
+            <button class="back" onclick="show('step3')">← Zurück</button>
             <button class="next" id="finishBtn" disabled onclick="finish()">Fertig 😊</button>
           </div>
         </div>
@@ -372,8 +372,6 @@
       document.getElementById(id).classList.add('active');
     }
 
-    function go(n) { show('step' + n); }
-
     function selectYes(el) {
       document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
@@ -395,7 +393,7 @@
       el.classList.add('selected');
       activity = '🎬 Kino';
       document.getElementById('next2').disabled = false;
-      go(2);
+      show('step2a');
     }
 
     function chooseCinemaType(el, type) {
@@ -426,6 +424,14 @@
 
     function checkTime() {
       document.getElementById('finishBtn').disabled = !document.getElementById('time').value;
+    }
+
+    function goBack() {
+      if (activity.includes('Kino')) {
+        show('step2b');
+      } else {
+        show('step2');
+      }
     }
 
     function sendMaybeNotification() {
