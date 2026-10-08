@@ -86,6 +86,12 @@
 
     .step.active {
       display: block;
+      animation: stepIn 0.3s ease;
+    }
+
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
     }
 
     .progress {
@@ -96,6 +102,13 @@
       margin-bottom: 20px;
       text-transform: uppercase;
       font-weight: 700;
+      display: table;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: #fdeef3;
+      color: #b0566f;
     }
 
     .options {
@@ -249,6 +262,12 @@
       margin-top: 22px;
       letter-spacing: 0.04em;
     }
+
+    @media (max-width: 480px) {
+      .progress { margin-bottom: 16px; }
+      .options { gap: 10px; }
+      .summary { padding: 16px 14px; line-height: 1.7; }
+    }
   </style>
 </head>
 <body>
@@ -292,8 +311,8 @@
           <div class="progress">Schritt 2a</div>
           <h2>Welche Art von Kino?</h2>
           <div class="options">
-            <button class="option" onclick="chooseCinemaType(this, '🎥 Normales Kino')"><strong>🎥 Normales Kino</strong><span>Das klassische Kinoerlebnis</span></button>
-            <button class="option" onclick="chooseCinemaType(this, '🚗 Autokino')"><strong>🚗 Autokino</strong><span>Gemütlich im Auto schauen</span></button>
+            <button class="option" onclick="chooseCinemaType(this, '🎥 Normales Kino')"><strong>🎥 Normales Kino</strong><span>Das klassische Kinoerlebnis.</span></button>
+            <button class="option" onclick="chooseCinemaType(this, '🚗 Autokino')"><strong>🚗 Autokino</strong><span>Gemütlich im Auto schauen.</span></button>
           </div>
           <div class="buttons">
             <button class="back" onclick="show('step2')">← Zurück</button>
@@ -305,12 +324,12 @@
           <div class="progress">Schritt 2b</div>
           <h2>Welche Film-Art möchtest du?</h2>
           <div class="options">
-            <button class="option" onclick="chooseFilmType(this, '😂 Komödie')"><strong>😂 Komödie</strong><span>Zum Lachen und Spaß haben</span></button>
-            <button class="option" onclick="chooseFilmType(this, '💕 Romantik')"><strong>💕 Romantik</strong><span>Liebevolle und gefühlvolle Geschichten</span></button>
-            <button class="option" onclick="chooseFilmType(this, '🎬 Action')"><strong>🎬 Action</strong><span>Spannung und Adrenalin</span></button>
-            <button class="option" onclick="chooseFilmType(this, '😢 Drama')"><strong>😢 Drama</strong><span>Emotionale und tiefgründige Filme</span></button>
-            <button class="option" onclick="chooseFilmType(this, '🔪 Thriller/Horror')"><strong>🔪 Thriller/Horror</strong><span>Spannende und gruselige Momente</span></button>
-            <button class="option" onclick="chooseFilmType(this, '🌈 Animation')"><strong>🌈 Animation</strong><span>Bunte und kreative Filme</span></button>
+            <button class="option" onclick="chooseFilmType(this, '😂 Komödie')"><strong>😂 Komödie</strong><span>Zum Lachen und Spaß haben.</span></button>
+            <button class="option" onclick="chooseFilmType(this, '💕 Romantik')"><strong>💕 Romantik</strong><span>Liebevolle und gefühlvolle Geschichten.</span></button>
+            <button class="option" onclick="chooseFilmType(this, '🎬 Action')"><strong>🎬 Action</strong><span>Spannung und Adrenalin.</span></button>
+            <button class="option" onclick="chooseFilmType(this, '😢 Drama')"><strong>😢 Drama</strong><span>Emotionale und tiefgründige Filme.</span></button>
+            <button class="option" onclick="chooseFilmType(this, '🔪 Thriller/Horror')"><strong>🔪 Thriller/Horror</strong><span>Spannende und gruselige Momente.</span></button>
+            <button class="option" onclick="chooseFilmType(this, '🌈 Animation')"><strong>🌈 Animation</strong><span>Bunte und kreative Filme.</span></button>
           </div>
           <div class="buttons">
             <button class="back" onclick="show('step2a')">← Zurück</button>
@@ -322,10 +341,10 @@
           <div class="progress">Schritt 2c</div>
           <h2>Welche Küche möchtest du?</h2>
           <div class="options">
-            <button class="option" onclick="chooseFoodType(this, '🍣 Sushi All you can eat')"><strong>🍣 Sushi All you can eat</strong><span>So viel Sushi wie du möchtest</span></button>
-            <button class="option" onclick="chooseFoodType(this, '🍕 Italienisch')"><strong>🍕 Italienisch</strong><span>Pasta, Pizza und mehr</span></button>
-            <button class="option" onclick="chooseFoodType(this, '🍔 International')"><strong>🍔 International</strong><span>Vielfältige Gerichte</span></button>
-            <button class="option" onclick="chooseFoodType(this, '🥘 Spanisch/Tapas')"><strong>🥘 Spanisch/Tapas</strong><span>Kleine Leckereien zum Teilen</span></button>
+            <button class="option" onclick="chooseFoodType(this, '🍣 Sushi All you can eat')"><strong>🍣 Sushi All you can eat</strong><span>So viel Sushi wie du möchtest.</span></button>
+            <button class="option" onclick="chooseFoodType(this, '🍕 Italienisch')"><strong>🍕 Italienisch</strong><span>Pasta, Pizza und mehr.</span></button>
+            <button class="option" onclick="chooseFoodType(this, '🍔 International')"><strong>🍔 International</strong><span>Vielfältige Gerichte.</span></button>
+            <button class="option" onclick="chooseFoodType(this, '🥘 Spanisch/Tapas')"><strong>🥘 Spanisch/Tapas</strong><span>Kleine Leckereien zum Teilen.</span></button>
             <button class="option" onclick="chooseFoodType(this, '🍜 Asiatisch')"><strong>🍜 Asiatisch</strong><span>Chinesisch, Japanisch oder Thai</span></button>
             <button class="option" onclick="chooseFoodType(this, '🥩 Steakhouse')"><strong>🥩 Steakhouse</strong><span>Klassisch und köstlich</span></button>
             <button class="option" onclick="chooseFoodType(this, '🌱 Vegetarisch')"><strong>🌱 Vegetarisch</strong><span>Gesunde und kreative Speisen</span></button>
