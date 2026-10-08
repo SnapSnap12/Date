@@ -1,238 +1,471 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ein Date für Emmy 😊</title>
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0; font-family:Arial,Helvetica,sans-serif; color:#333;
-  background:#f8f4f5; min-height:100vh;
-}
-.container{width:min(620px,92%);margin:0 auto;padding:35px 0}
-.card{
-  background:white;border-radius:18px;padding:30px;
-  box-shadow:0 5px 25px rgba(0,0,0,.08);
-}
-h1{text-align:center;font-size:34px;margin:5px 0 12px}
-h2{font-size:24px;margin:0 0 20px}
-.intro{text-align:center;color:#666;font-size:17px;line-height:1.5;margin-bottom:30px}
-.heart{text-align:center;font-size:42px;margin-bottom:10px}
-.step{display:none}
-.step.active{display:block}
-.options{display:grid;gap:12px}
-.option{
-  width:100%;padding:17px;background:#fff;border:2px solid #ddd;
-  border-radius:12px;text-align:left;font-size:17px;cursor:pointer;
-}
-.option:hover{border-color:#e58aa5}
-.option.selected{border-color:#d95d7d;background:#fff3f6}
-.option strong{display:block;margin-bottom:4px}
-.option span{font-size:14px;color:#777}
-.buttons{display:flex;gap:10px;margin-top:25px}
-button.next,button.back{
-  flex:1;border:0;border-radius:12px;padding:15px;font-size:16px;
-  cursor:pointer;font-weight:bold;
-}
-.next{background:#d95d7d;color:white}
-.back{background:#eee;color:#444}
-.next:disabled{opacity:.45;cursor:not-allowed}
-input,select{
-  width:100%;padding:15px;border:2px solid #ddd;border-radius:12px;
-  font-size:16px;background:white;
-}
-.progress{text-align:center;color:#888;font-size:13px;margin-bottom:22px}
-.final{text-align:center}
-.final h2{font-size:30px}
-.summary{
-  background:#faf5f7;border-radius:12px;padding:18px;text-align:left;
-  line-height:1.8;margin:22px 0;
-}
-.no{text-align:center;color:#666;line-height:1.6}
-.small{text-align:center;color:#aaa;font-size:12px;margin-top:25px}
-.notification-option{
-  background:#fff;border:2px solid #ddd;border-radius:12px;padding:15px;
-  display:flex;align-items:center;gap:12px;margin-bottom:15px;
-}
-.notification-option input{
-  width:auto;margin:0;padding:0;border:none;
-}
-.notification-option label{
-  margin:0;cursor:pointer;flex:1;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ein Date für Emmy 😊</title>
+  <style>
+    :root {
+      --bg: #fdf2f5;
+      --card: #ffffff;
+      --pink: #d95d7d;
+      --pink-dark: #c74569;
+      --pink-soft: #fff0f5;
+      --text: #2f2a2d;
+      --muted: #666;
+      --line: #e8dfe3;
+      --shadow: 0 18px 40px rgba(184, 93, 117, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #f9edf1 0%, #f6f1f4 100%);
+      color: var(--text);
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px;
+    }
+
+    .container {
+      width: min(620px, 100%);
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 26px;
+      padding: 30px 28px 26px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(217, 93, 125, 0.06);
+    }
+
+    .heart {
+      text-align: center;
+      font-size: 46px;
+      margin-bottom: 8px;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    h1 {
+      margin: 8px 0 12px;
+      text-align: center;
+      font-size: clamp(30px, 4vw, 42px);
+      line-height: 1.1;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(22px, 3vw, 28px);
+      line-height: 1.25;
+    }
+
+    .intro {
+      text-align: center;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .progress {
+      text-align: center;
+      color: #8e7d83;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      width: 100%;
+      background: #fff;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 18px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 17px;
+      color: var(--text);
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: #df9bb0;
+      box-shadow: 0 8px 18px rgba(217, 93, 125, 0.08);
+    }
+
+    .option.selected {
+      border-color: var(--pink);
+      background: var(--pink-soft);
+      box-shadow: 0 10px 20px rgba(217, 93, 125, 0.08);
+    }
+
+    .option strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
+
+    .option span {
+      display: block;
+      color: #7a6d72;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .next, .back {
+      flex: 1;
+      border: none;
+      border-radius: 14px;
+      padding: 15px 18px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .next {
+      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
+      color: white;
+    }
+
+    .back {
+      background: #f2f2f2;
+      color: #333;
+    }
+
+    .next:hover, .back:hover {
+      transform: translateY(-1px);
+    }
+
+    .next:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    input, select {
+      width: 100%;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 15px 16px;
+      font-size: 16px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #d38da1;
+      box-shadow: 0 0 0 4px rgba(217, 93, 125, 0.08);
+    }
+
+    .notification-box {
+      background: #fffafc;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .notification-box input {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      accent-color: var(--pink);
+    }
+
+    .notification-box label {
+      flex: 1;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .final {
+      text-align: center;
+    }
+
+    .final h2 {
+      font-size: clamp(28px, 4vw, 38px);
+      margin-bottom: 10px;
+    }
+
+    .final p {
+      color: var(--muted);
+      margin-bottom: 18px;
+      font-size: 17px;
+    }
+
+    .summary {
+      background: linear-gradient(135deg, #fff8fa 0%, #fff2f6 100%);
+      border: 1px solid #f2dfe7;
+      border-radius: 16px;
+      padding: 18px 18px;
+      text-align: left;
+      line-height: 1.75;
+      margin: 18px 0 20px;
+      font-size: 16px;
+    }
+
+    .summary strong {
+      font-size: 17px;
+    }
+
+    .no {
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .no h2 {
+      margin-bottom: 12px;
+    }
+
+    .small {
+      text-align: center;
+      color: #9d8b92;
+      font-size: 12px;
+      margin-top: 22px;
+      letter-spacing: 0.04em;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-<div class="card">
+  <div class="container">
+    <div class="card">
+      <div id="main">
+        <div class="heart">😊</div>
+        <h1>Hey Emmy!</h1>
+        <p class="intro">
+          Ich wollte dich etwas fragen.<br />
+          <strong>Hättest du Lust, mit mir auf ein Date zu gehen?</strong>
+        </p>
 
-<div id="main">
-  <div class="heart">😊</div>
-  <h1>Hey Emmy!</h1>
-  <p class="intro">
-    Ich wollte dich etwas fragen.<br>
-    <strong>Hättest du Lust, mit mir auf ein Date zu gehen?</strong>
-  </p>
+        <div class="step active" id="step1">
+          <div class="progress">Schritt 1 von 4</div>
+          <h2>Hast du Lust auf ein Date?</h2>
+          <div class="options">
+            <button class="option" onclick="selectYes(this)">
+              <strong>Ja 😊🥰</strong>
+              <span>Sehr gerne!</span>
+            </button>
+            <button class="option" onclick="selectNo(this)">
+              <strong>Vielleicht 😊</strong>
+              <span>Lass mich noch überlegen.</span>
+            </button>
+          </div>
+          <div class="buttons">
+            <button class="next" id="next1" disabled onclick="go(2)">Weiter →</button>
+          </div>
+        </div>
 
-  <div class="step active" id="step1">
-    <div class="progress">Schritt 1 von 4</div>
-    <h2>Hast du Lust auf ein Date?</h2>
-    <div class="options">
-      <button class="option" onclick="selectYes(this)">
-        <strong>Ja 😊🥰</strong>
-        <span>Sehr gerne!</span>
-      </button>
-      <button class="option" onclick="selectNo(this)">
-        <strong>Vielleicht 😊</strong>
-        <span>Lass mich noch überlegen.</span>
-      </button>
-    </div>
-    <div class="buttons">
-      <button class="next" id="next1" disabled onclick="go(2)">Weiter →</button>
+        <div class="step" id="step2">
+          <div class="progress">Schritt 2 von 4</div>
+          <h2>Was möchtest du machen?</h2>
+          <div class="options">
+            <button class="option" onclick="choose(this,'🎬 Kino')"><strong>🎬 Kino</strong><span>Gemütlich einen Film schauen.</span></button>
+            <button class="option" onclick="choose(this,'🎳 Bowling')"><strong>🎳 Bowling</strong><span>Ein bisschen Spaß und Wettbewerb.</span></button>
+            <button class="option" onclick="choose(this,'🌿 Spaziergang')"><strong>🌿 Spaziergang</strong><span>Zusammen unterwegs sein und quatschen.</span></button>
+            <button class="option" onclick="choose(this,'🌅 Sonnenuntergang anschauen')"><strong>🌅 Sonnenuntergang</strong><span>Gemeinsam den Sonnenuntergang anschauen.</span></button>
+          </div>
+          <div class="buttons">
+            <button class="back" onclick="go(1)">← Zurück</button>
+            <button class="next" id="next2" disabled onclick="go(3)">Weiter →</button>
+          </div>
+        </div>
+
+        <div class="step" id="step3">
+          <div class="progress">Schritt 3 von 4</div>
+          <h2>Wann hast du Zeit?</h2>
+          <input type="date" id="date" onchange="checkDate()" />
+          <div class="buttons">
+            <button class="back" onclick="go(2)">← Zurück</button>
+            <button class="next" id="next3" disabled onclick="go(4)">Weiter →</button>
+          </div>
+        </div>
+
+        <div class="step" id="step4">
+          <div class="progress">Schritt 4 von 4</div>
+          <h2>Wann ungefähr?</h2>
+          <select id="time" onchange="checkTime()">
+            <option value="">Bitte auswählen</option>
+            <option>Nachmittags</option>
+            <option>Früher Abend</option>
+            <option>Abends</option>
+            <option>Ganz spontan 😊</option>
+          </select>
+
+          <div class="notification-box">
+            <input type="checkbox" id="emailCheckbox" checked />
+            <label for="emailCheckbox">E-Mail-Benachrichtigung senden 📧</label>
+          </div>
+
+          <div class="buttons">
+            <button class="back" onclick="go(3)">← Zurück</button>
+            <button class="next" id="finishBtn" disabled onclick="finish()">Fertig 😊</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="noPage" class="step no">
+        <div class="heart">😊</div>
+        <h2>Kein Problem, Emmy.</h2>
+        <p>Dann lassen wir die Entscheidung einfach noch offen. 😊</p>
+        <button class="next" onclick="restart()">Nochmal</button>
+      </div>
+
+      <div id="result" class="step final">
+        <div class="heart">😊</div>
+        <h2>Dann haben wir ein Date!</h2>
+        <p>Ich freue mich darauf. 😊</p>
+        <div class="summary" id="summary"></div>
+        <button class="next" onclick="restart()">Nochmal auswählen</button>
+      </div>
+
+      <p class="small">Eine kleine Frage von mir an dich 😊</p>
     </div>
   </div>
 
-  <div class="step" id="step2">
-    <div class="progress">Schritt 2 von 4</div>
-    <h2>Was möchtest du machen?</h2>
-    <div class="options">
-      <button class="option" onclick="choose(this,'🎬 Kino')"><strong>🎬 Kino</strong><span>Gemütlich einen Film schauen.</span></button>
-      <button class="option" onclick="choose(this,'🎳 Bowling')"><strong>🎳 Bowling</strong><span>Ein bisschen Spaß und Wettbewerb.</span></button>
-      <button class="option" onclick="choose(this,'🌿 Spaziergang')"><strong>🌿 Spaziergang</strong><span>Zusammen unterwegs sein und quatschen.</span></button>
-      <button class="option" onclick="choose(this,'🌅 Sonnenuntergang anschauen')"><strong>🌅 Sonnenuntergang</strong><span>Gemeinsam den Sonnenuntergang anschauen.</span></button>
-    </div>
-    <div class="buttons">
-      <button class="back" onclick="go(1)">← Zurück</button>
-      <button class="next" id="next2" disabled onclick="go(3)">Weiter →</button>
-    </div>
-  </div>
+  <script>
+    let dateAnswer = false;
+    let activity = "";
 
-  <div class="step" id="step3">
-    <div class="progress">Schritt 3 von 4</div>
-    <h2>Wann hast du Zeit?</h2>
-    <input type="date" id="date" onchange="checkDate()">
-    <div class="buttons">
-      <button class="back" onclick="go(2)">← Zurück</button>
-      <button class="next" id="next3" disabled onclick="go(4)">Weiter →</button>
-    </div>
-  </div>
+    function show(id) {
+      document.querySelectorAll('.step').forEach(x => x.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
 
-  <div class="step" id="step4">
-    <div class="progress">Schritt 4 von 4</div>
-    <h2>Wann ungefähr?</h2>
-    <select id="time" onchange="checkTime()">
-      <option value="">Bitte auswählen</option>
-      <option>Nachmittags</option>
-      <option>Früher Abend</option>
-      <option>Abends</option>
-      <option>Ganz spontan 😊</option>
-    </select>
-    <div class="notification-option">
-      <input type="checkbox" id="emailCheckbox" checked>
-      <label for="emailCheckbox">E-Mail-Benachrichtigung senden 📧</label>
-    </div>
-    <div class="buttons">
-      <button class="back" onclick="go(3)">← Zurück</button>
-      <button class="next" id="finishBtn" disabled onclick="finish()">Fertig 😊</button>
-    </div>
-  </div>
-</div>
+    function go(n) {
+      show('step' + n);
+    }
 
-<div id="noPage" class="step no">
-  <div class="heart">😊</div>
-  <h2>Kein Problem, Emmy.</h2>
-  <p>Dann lassen wir die Entscheidung einfach noch offen. 😊</p>
-  <button class="next" onclick="restart()">Nochmal</button>
-</div>
+    function selectYes(el) {
+      document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      dateAnswer = true;
+      document.getElementById('next1').disabled = false;
+    }
 
-<div id="result" class="step final">
-  <div class="heart">😊</div>
-  <h2>Dann haben wir ein Date!</h2>
-  <p>Ich freue mich darauf. 😊</p>
-  <div class="summary" id="summary"></div>
-  <button class="next" onclick="restart()">Nochmal auswählen</button>
-</div>
+    function selectNo(el) {
+      document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      dateAnswer = false;
+      document.getElementById('next1').disabled = false;
+      document.getElementById('next1').onclick = function () { show('noPage'); };
+    }
 
-<p class="small">Eine kleine Frage von mir an dich 😊</p>
-</div>
-</div>
+    function choose(el, value) {
+      document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      activity = value;
+      document.getElementById('next2').disabled = false;
+    }
 
-<script>
-let dateAnswer=false, activity="";
+    function checkDate() {
+      document.getElementById('next3').disabled = !document.getElementById('date').value;
+    }
 
-function show(id){
-  document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function go(n){show('step'+n)}
-function selectYes(el){
-  document.querySelectorAll('#step1 .option').forEach(x=>x.classList.remove('selected'));
-  el.classList.add('selected'); dateAnswer=true;
-  document.getElementById('next1').disabled=false;
-}
-function selectNo(el){
-  document.querySelectorAll('#step1 .option').forEach(x=>x.classList.remove('selected'));
-  el.classList.add('selected'); dateAnswer=false;
-  document.getElementById('next1').disabled=false;
-  document.getElementById('next1').onclick=function(){show('noPage')};
-}
-function choose(el,value){
-  document.querySelectorAll('#step2 .option').forEach(x=>x.classList.remove('selected'));
-  el.classList.add('selected'); activity=value;
-  document.getElementById('next2').disabled=false;
-}
-function checkDate(){document.getElementById('next3').disabled=!document.getElementById('date').value}
-function checkTime(){document.getElementById('finishBtn').disabled=!document.getElementById('time').value}
+    function checkTime() {
+      document.getElementById('finishBtn').disabled = !document.getElementById('time').value;
+    }
 
-function sendEmailNotification(dateText, timeText){
-  const recipient = 'd.preisinger@online.de';
-  const answerText = dateAnswer ? 'Ja' : 'Vielleicht';
-  const message = `Neue Date-Antwort\n\nAntwort: ${answerText}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}`;
+    function sendEmailNotification(dateText, timeText) {
+      const recipient = 'd.preisinger@online.de';
+      const answerText = dateAnswer ? 'Ja' : 'Vielleicht';
+      const payload = {
+        _subject: 'Neue Date-Antwort!',
+        _template: 'table',
+        _captcha: 'false',
+        name: answerText,
+        activity: activity,
+        date: dateText,
+        time: timeText,
+        message: `Neue Date-Antwort\n\nAntwort: ${answerText}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}`
+      };
 
-  fetch('https://formsubmit.co/ajax/' + recipient, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify({
-      _subject: 'Neue Date-Antwort!',
-      _template: 'table',
-      _captcha: 'false',
-      name: answerText,
-      activity: activity,
-      date: dateText,
-      time: timeText,
-      message: message
-    })
-  })
-  .then(response => response.json())
-  .then(data => console.log('E-Mail gesendet:', data))
-  .catch(error => console.error('E-Mail-Fehler:', error));
-}
+      fetch('https://formsubmit.co/ajax/' + recipient, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => console.log('E-Mail gesendet:', data))
+      .catch(error => console.error('E-Mail-Fehler:', error));
+    }
 
-function finish(){
-  const raw=document.getElementById('date').value;
-  const d=new Date(raw+'T12:00:00');
-  const formatted=d.toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
-  const time=document.getElementById('time').value;
-  const emailEnabled=document.getElementById('emailCheckbox').checked;
-  
-  document.getElementById('summary').innerHTML=
-    '<strong>Unsere Auswahl:</strong><br>'+
-    activity+'<br>'+
-    '📅 '+formatted+'<br>'+
-    '⏰ '+time;
+    function finish() {
+      const raw = document.getElementById('date').value;
+      const d = new Date(raw + 'T12:00:00');
+      const formatted = d.toLocaleDateString('de-DE', {
+        weekday: 'long',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
 
-  if(emailEnabled){
-    sendEmailNotification(formatted, time);
-  }
-  
-  show('result');
-}
+      const time = document.getElementById('time').value;
+      const emailEnabled = document.getElementById('emailCheckbox').checked;
 
-function restart(){location.reload()}
-</script>
+      document.getElementById('summary').innerHTML =
+        '<strong>Unsere Auswahl:</strong><br>' +
+        activity + '<br>' +
+        '📅 ' + formatted + '<br>' +
+        '⏰ ' + time;
+
+      if (emailEnabled) {
+        sendEmailNotification(formatted, time);
+      }
+
+      show('result');
+    }
+
+    function restart() {
+      location.reload();
+    }
+  </script>
 </body>
 </html>
