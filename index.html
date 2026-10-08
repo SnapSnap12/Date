@@ -158,17 +158,6 @@ input,select{
 </div>
 </div>
 
-<form id="notifyForm" action="https://formsubmit.co/d.preisinger@online.de" method="POST" style="display:none">
-  <input type="hidden" name="_subject" value="Neue Date-Antwort!">
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_template" value="table">
-  <input type="hidden" name="name" id="emailName">
-  <input type="hidden" name="activity" id="emailActivity">
-  <input type="hidden" name="date" id="emailDate">
-  <input type="hidden" name="time" id="emailTime">
-  <input type="hidden" name="message" id="emailMessage">
-</form>
-
 <script>
 let dateAnswer=false, activity="";
 
@@ -197,17 +186,30 @@ function checkDate(){document.getElementById('next3').disabled=!document.getElem
 function checkTime(){document.getElementById('finishBtn').disabled=!document.getElementById('time').value}
 
 function sendEmailNotification(dateText, timeText){
-  const form=document.getElementById('notifyForm');
-  const nameValue = dateAnswer ? 'Ja' : 'Vielleicht';
-  const message = `Antwort: ${nameValue}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}`;
+  const recipient = 'd.preisinger@online.de';
+  const answerText = dateAnswer ? 'Ja' : 'Vielleicht';
+  const message = `Neue Date-Antwort\n\nAntwort: ${answerText}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}`;
 
-  document.getElementById('emailName').value = nameValue;
-  document.getElementById('emailActivity').value = activity;
-  document.getElementById('emailDate').value = dateText;
-  document.getElementById('emailTime').value = timeText;
-  document.getElementById('emailMessage').value = message;
-
-  form.submit();
+  fetch('https://formsubmit.co/ajax/' + recipient, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      _subject: 'Neue Date-Antwort!',
+      _template: 'table',
+      _captcha: 'false',
+      name: answerText,
+      activity: activity,
+      date: dateText,
+      time: timeText,
+      message: message
+    })
+  })
+  .then(response => response.json())
+  .then(data => console.log('E-Mail gesendet:', data))
+  .catch(error => console.error('E-Mail-Fehler:', error));
 }
 
 function finish(){
