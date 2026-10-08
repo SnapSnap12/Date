@@ -355,10 +355,10 @@
     function goToDate() {
       if (activity === '🎬 Kino') {
         const normal = confirm('🎬 Möchtest du normales Kino wählen?\n\nOK = Normales Kino\nAbbrechen = Autokino');
-        cinemaType = normal ? 'Normales Kino' : 'Autokino';
+        cinemaType = normal ? '🎥 Normales Kino' : '🚗 Autokino';
 
         const comedy = confirm('🍿 Welche Film-Art möchtest du?\n\nOK = Komödie\nAbbrechen = Eine andere Film-Art');
-        filmType = comedy ? 'Komödie' : 'Andere Film-Art';
+        filmType = comedy ? '😂 Komödie' : '🎞️ Andere Film-Art';
 
         activity = `🎬 Kino (${cinemaType}, ${filmType})`;
       }
