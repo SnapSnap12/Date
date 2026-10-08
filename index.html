@@ -407,8 +407,8 @@
       el.classList.add('selected');
       el.classList.add('maybe-shrink');
       dateAnswer = false;
-      document.getElementById('next1').disabled = false;
-      setTimeout(() => sendMaybeNotification(), 500);
+      show('maybePage');
+      sendMaybeNotification();
     }
 
     function chooseCinema(el) {
@@ -492,8 +492,8 @@
         body: JSON.stringify(payload)
       })
       .then(response => response.json())
-      .then(data => { console.log('E-Mail gesendet:', data); show('maybePage'); })
-      .catch(error => { console.error('E-Mail-Fehler:', error); show('maybePage'); });
+      .then(data => { console.log('E-Mail gesendet:', data); })
+      .catch(error => { console.error('E-Mail-Fehler:', error); });
     }
 
     function sendEmailNotification(dateText, timeText) {
