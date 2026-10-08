@@ -267,7 +267,7 @@
             <button class="option maybe-button" onclick="selectMaybe(this)"><strong>Vielleicht 😊</strong><span>Lass mich noch überlegen.</span></button>
           </div>
           <div class="buttons">
-            <button class="next" id="next1" disabled onclick="show('step2')">Weiter →</button>
+            <button class="next" id="next1" disabled onclick="proceedFromStep1()">Weiter →</button>
           </div>
         </div>
 
@@ -407,8 +407,16 @@
       el.classList.add('selected');
       el.classList.add('maybe-shrink');
       dateAnswer = false;
-      show('maybePage');
-      sendMaybeNotification();
+      document.getElementById('next1').disabled = false;
+    }
+
+    function proceedFromStep1() {
+      if (dateAnswer === false) {
+        show('maybePage');
+        sendMaybeNotification();
+      } else {
+        show('step2');
+      }
     }
 
     function chooseCinema(el) {
