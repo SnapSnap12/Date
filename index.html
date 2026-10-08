@@ -275,7 +275,7 @@
           <div class="progress">Schritt 2</div>
           <h2>Was möchtest du machen?</h2>
           <div class="options">
-            <button class="option" onclick="chooseCinema(this)"><strong>🎬 Kino</strong><span>Normales Kino oder Autokino?</span></button>
+            <button class="option" onclick="chooseCinema(this)"><strong>🎥 Kino</strong><span>Gemeinsam einen Film genießen?</span></button>
             <button class="option" onclick="chooseFood(this)"><strong>🍽️ Abendessen</strong><span>Welche Küche magst du?</span></button>
             <button class="option" onclick="choose(this,'🎳 Bowling')"><strong>🎳 Bowling</strong><span>Ein bisschen Spaß und Wettbewerb.</span></button>
             <button class="option" onclick="choose(this,'🏎️ Go-Kart fahren')"><strong>🏎️ Go-Kart fahren</strong><span>Adrenalin und Abenteuer auf der Strecke.</span></button>
@@ -414,7 +414,7 @@
     function chooseCinema(el) {
       document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
-      activity = '🎬 Kino';
+      activity = '🎥 Kino';
       document.getElementById('next2').disabled = false;
       show('step2a');
     }
@@ -438,7 +438,7 @@
       document.querySelectorAll('#step2b .option').forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
       filmType = type;
-      activity = `🎬 Kino (${cinemaType}, ${type})`;
+      activity = `🎥 Kino (${cinemaType}, ${type})`;
       document.getElementById('next2b').disabled = false;
     }
 
