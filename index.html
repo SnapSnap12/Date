@@ -145,53 +145,6 @@
       font-size: 14px;
     }
 
-    .sub-options {
-      display: none;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .sub-options.show {
-      display: grid;
-    }
-
-    .sub-option {
-      width: 100%;
-      background: #fff;
-      border: 2px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 15px;
-      color: var(--text);
-    }
-
-    .sub-option:hover {
-      transform: translateY(-1px);
-      border-color: #df9bb0;
-      box-shadow: 0 6px 14px rgba(217, 93, 125, 0.08);
-    }
-
-    .sub-option.selected {
-      border-color: var(--pink);
-      background: var(--pink-soft);
-    }
-
-    .sub-option strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .sub-option span {
-      display: block;
-      color: #7a6d72;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
     .buttons {
       display: flex;
       gap: 12px;
@@ -322,21 +275,7 @@
           <div class="progress">Schritt 2</div>
           <h2>Was möchtest du machen?</h2>
           <div class="options">
-            <div>
-              <button class="option" onclick="selectCinema(this)"><strong>🎬 Kino</strong><span>Normales Kino oder Autokino?</span></button>
-              <div class="sub-options" id="cinemaOptions">
-                <button class="sub-option" onclick="chooseCinemaType(this, '🎥 Normales Kino', 'filmOptions1')"><strong>🎥 Normales Kino</strong></button>
-                <button class="sub-option" onclick="chooseCinemaType(this, '🚗 Autokino', 'filmOptions2')"><strong>🚗 Autokino</strong></button>
-              </div>
-              <div class="sub-options" id="filmOptions1">
-                <button class="sub-option" onclick="chooseFilmType(this, '🎬 Kino (🎥 Normales Kino, 😂 Komödie)')"><strong>😂 Komödie</strong></button>
-                <button class="sub-option" onclick="chooseFilmType(this, '🎬 Kino (🎥 Normales Kino, 🎞️ Andere Film-Art)')"><strong>🎞️ Andere</strong></button>
-              </div>
-              <div class="sub-options" id="filmOptions2">
-                <button class="sub-option" onclick="chooseFilmType(this, '🎬 Kino (🚗 Autokino, 😂 Komödie)')"><strong>😂 Komödie</strong></button>
-                <button class="sub-option" onclick="chooseFilmType(this, '🎬 Kino (🚗 Autokino, 🎞️ Andere Film-Art)')"><strong>🎞️ Andere</strong></button>
-              </div>
-            </div>
+            <button class="option" onclick="chooseCinema(this)"><strong>🎬 Kino</strong><span>Normales Kino oder Autokino?</span></button>
             <button class="option" onclick="choose(this,'🍽️ Abendessen')"><strong>🍽️ Abendessen</strong><span>Gemeinsam essen gehen und genießen.</span></button>
             <button class="option" onclick="choose(this,'🎳 Bowling')"><strong>🎳 Bowling</strong><span>Ein bisschen Spaß und Wettbewerb.</span></button>
             <button class="option" onclick="choose(this,'🏎️ Go-Kart fahren')"><strong>🏎️ Go-Kart fahren</strong><span>Adrenalin und Abenteuer auf der Strecke.</span></button>
@@ -346,6 +285,32 @@
           <div class="buttons">
             <button class="back" onclick="go(1)">← Zurück</button>
             <button class="next" id="next2" disabled onclick="go(3)">Weiter →</button>
+          </div>
+        </div>
+
+        <div class="step" id="step2a">
+          <div class="progress">Schritt 2a</div>
+          <h2>Welche Art von Kino?</h2>
+          <div class="options">
+            <button class="option" onclick="chooseCinemaType(this, '🎥 Normales Kino')"><strong>🎥 Normales Kino</strong><span>Das klassische Kinoerlebnis</span></button>
+            <button class="option" onclick="chooseCinemaType(this, '🚗 Autokino')"><strong>🚗 Autokino</strong><span>Gemütlich im Auto schauen</span></button>
+          </div>
+          <div class="buttons">
+            <button class="back" onclick="go(2)">← Zurück</button>
+            <button class="next" id="next2a" disabled onclick="go(2)">Weiter →</button>
+          </div>
+        </div>
+
+        <div class="step" id="step2b">
+          <div class="progress">Schritt 2b</div>
+          <h2>Welche Film-Art möchtest du?</h2>
+          <div class="options">
+            <button class="option" onclick="chooseFilmType(this, '😂 Komödie')"><strong>😂 Komödie</strong><span>Zum Lachen und Spaß haben</span></button>
+            <button class="option" onclick="chooseFilmType(this, '🎞️ Andere Film-Art')"><strong>🎞️ Andere Film-Art</strong><span>Drama, Action, Horror oder was anderes</span></button>
+          </div>
+          <div class="buttons">
+            <button class="back" onclick="go(2)">← Zurück</button>
+            <button class="next" id="next2b" disabled onclick="go(3)">Weiter →</button>
           </div>
         </div>
 
@@ -399,6 +364,8 @@
   <script>
     let dateAnswer = false;
     let activity = "";
+    let cinemaType = "";
+    let filmType = "";
 
     function show(id) {
       document.querySelectorAll('.step').forEach(x => x.classList.remove('active'));
@@ -423,32 +390,31 @@
       setTimeout(() => sendMaybeNotification(), 500);
     }
 
-    function selectCinema(el) {
+    function chooseCinema(el) {
       document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
-      document.getElementById('cinemaOptions').classList.add('show');
-      document.getElementById('filmOptions1').classList.remove('show');
-      document.getElementById('filmOptions2').classList.remove('show');
-    }
-
-    function chooseCinemaType(el, cinemaType, filmOptionsId) {
-      document.querySelectorAll('#cinemaOptions .sub-option').forEach(x => x.classList.remove('selected'));
-      el.classList.add('selected');
-      document.getElementById('filmOptions1').classList.remove('show');
-      document.getElementById('filmOptions2').classList.remove('show');
-      document.getElementById(filmOptionsId).classList.add('show');
-    }
-
-    function chooseFilmType(el, value) {
-      document.querySelectorAll('.sub-options .sub-option').forEach(x => x.classList.remove('selected'));
-      el.classList.add('selected');
-      activity = value;
+      activity = '🎬 Kino';
       document.getElementById('next2').disabled = false;
+      go(2);
+    }
+
+    function chooseCinemaType(el, type) {
+      document.querySelectorAll('#step2a .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      cinemaType = type;
+      document.getElementById('next2a').disabled = false;
+    }
+
+    function chooseFilmType(el, type) {
+      document.querySelectorAll('#step2b .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      filmType = type;
+      activity = `🎬 Kino (${cinemaType}, ${type})`;
+      document.getElementById('next2b').disabled = false;
     }
 
     function choose(el, value) {
       document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
-      document.querySelectorAll('#step2 .sub-options').forEach(x => x.classList.remove('show'));
       el.classList.add('selected');
       activity = value;
       document.getElementById('next2').disabled = false;
