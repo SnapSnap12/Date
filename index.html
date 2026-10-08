@@ -275,8 +275,8 @@
           <div class="progress">Schritt 2</div>
           <h2>Was möchtest du machen?</h2>
           <div class="options">
-            <button class="option" onclick="chooseCinema(this)"><strong>🎥 Kino</strong><span>Gemeinsam einen Film genießen.</span></button>
-            <button class="option" onclick="chooseFood(this)"><strong>🍽️ Abendessen</strong><span>Zusammen eine schöne Zeit bei Essen genießen.</span></button>
+            <button class="option" onclick="selectCinema(this)"><strong>🎥 Kino</strong><span>Gemeinsam einen Film genießen.</span></button>
+            <button class="option" onclick="selectFood(this)"><strong>🍽️ Abendessen</strong><span>Zusammen eine schöne Zeit bei Essen genießen.</span></button>
             <button class="option" onclick="choose(this,'🎳 Bowling')"><strong>🎳 Bowling</strong><span>Ein bisschen Spaß und Wettbewerb.</span></button>
             <button class="option" onclick="choose(this,'🏎️ Go-Kart fahren')"><strong>🏎️ Go-Kart fahren</strong><span>Adrenalin und Abenteuer auf der Strecke.</span></button>
             <button class="option" onclick="choose(this,'🌿 Spaziergang')"><strong>🌿 Spaziergang</strong><span>Zusammen einen schönen Spaziergang machen.</span></button>
@@ -284,7 +284,7 @@
           </div>
           <div class="buttons">
             <button class="back" onclick="show('step1')">← Zurück</button>
-            <button class="next" id="next2" disabled onclick="show('step3')">Weiter →</button>
+            <button class="next" id="next2" disabled onclick="proceedFromStep2()">Weiter →</button>
           </div>
         </div>
 
@@ -389,6 +389,7 @@
     let cinemaType = "";
     let filmType = "";
     let foodType = "";
+    let selectedActivityType = ""; // 'cinema' oder 'food'
 
     function show(id) {
       document.querySelectorAll('.step').forEach(x => x.classList.remove('active'));
@@ -419,20 +420,30 @@
       }
     }
 
-    function chooseCinema(el) {
+    function selectCinema(el) {
       document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
       activity = '🎥 Kino';
+      selectedActivityType = 'cinema';
       document.getElementById('next2').disabled = false;
-      show('step2a');
     }
 
-    function chooseFood(el) {
+    function selectFood(el) {
       document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
       activity = '🍽️ Abendessen';
+      selectedActivityType = 'food';
       document.getElementById('next2').disabled = false;
-      show('step2c');
+    }
+
+    function proceedFromStep2() {
+      if (selectedActivityType === 'cinema') {
+        show('step2a');
+      } else if (selectedActivityType === 'food') {
+        show('step2c');
+      } else {
+        show('step3');
+      }
     }
 
     function chooseCinemaType(el, type) {
@@ -462,6 +473,7 @@
       document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
       activity = value;
+      selectedActivityType = 'other';
       document.getElementById('next2').disabled = false;
     }
 
