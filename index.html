@@ -284,7 +284,7 @@
           <div class="progress">Schritt 2</div>
           <h2>Was möchtest du machen?</h2>
           <div class="options">
-            <button class="option" onclick="choose(this,'🎬 Kino')"><strong>🎬 Kino</strong><span>Gemütlich einen Film schauen.</span></button>
+            <button class="option" onclick="choose(this,'🎬 Kino - normales Kino')"><strong>🎬 Kino</strong><span>Normales Kino oder Autokino?</span></button>
             <button class="option" onclick="choose(this,'🍽️ Abendessen')"><strong>🍽️ Abendessen</strong><span>Gemeinsam essen gehen und genießen.</span></button>
             <button class="option" onclick="choose(this,'🎳 Bowling')"><strong>🎳 Bowling</strong><span>Ein bisschen Spaß und Wettbewerb.</span></button>
             <button class="option" onclick="choose(this,'🏎️ Go-Kart fahren')"><strong>🏎️ Go-Kart fahren</strong><span>Adrenalin und Abenteuer auf der Strecke.</span></button>
@@ -348,6 +348,8 @@
   <script>
     let dateAnswer = false;
     let activity = "";
+    let cinemaType = "";
+    let filmType = "";
 
     function show(id) {
       document.querySelectorAll('.step').forEach(x => x.classList.remove('active'));
@@ -392,6 +394,15 @@
     }
 
     function goToDate() {
+      if (activity === '🎬 Kino - normales Kino') {
+        const normal = confirm('Möchtest du normales Kino wählen?\n\nOK = Normales Kino\nAbbrechen = Autokino');
+        cinemaType = normal ? 'Normales Kino' : 'Autokino';
+
+        const comedy = confirm('Welche Film-Art möchtest du?\n\nOK = Komödie\nAbbrechen = Eine andere Film-Art');
+        filmType = comedy ? 'Komödie' : 'Andere Film-Art';
+
+        activity = `🎬 Kino (${cinemaType}, ${filmType})`;
+      }
       go(3);
     }
 
