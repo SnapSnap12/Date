@@ -51,6 +51,16 @@ input,select{
 }
 .no{text-align:center;color:#666;line-height:1.6}
 .small{text-align:center;color:#aaa;font-size:12px;margin-top:25px}
+.notification-option{
+  background:#fff;border:2px solid #ddd;border-radius:12px;padding:15px;
+  display:flex;align-items:center;gap:12px;margin-bottom:15px;
+}
+.notification-option input{
+  width:auto;margin:0;padding:0;border:none;
+}
+.notification-option label{
+  margin:0;cursor:pointer;flex:1;
+}
 </style>
 </head>
 <body>
@@ -118,6 +128,10 @@ input,select{
       <option>Abends</option>
       <option>Ganz spontan 😊</option>
     </select>
+    <div class="notification-option">
+      <input type="checkbox" id="notifCheckbox">
+      <label for="notifCheckbox">Benachrichtigung erhalten 🔔</label>
+    </div>
     <div class="buttons">
       <button class="back" onclick="go(3)">← Zurück</button>
       <button class="next" id="finishBtn" disabled onclick="finish()">Fertig 😊</button>
@@ -170,18 +184,53 @@ function choose(el,value){
 }
 function checkDate(){document.getElementById('next3').disabled=!document.getElementById('date').value}
 function checkTime(){document.getElementById('finishBtn').disabled=!document.getElementById('time').value}
+
+function requestNotificationPermission(){
+  if('Notification' in window && Notification.permission === 'default'){
+    Notification.requestPermission();
+  }
+}
+
+function sendNotification(activity, date, time){
+  if('Notification' in window && Notification.permission === 'granted'){
+    new Notification('Date bestätigt! 😊', {
+      body: `${activity} am ${date} ${time}`,
+      icon: '😊'
+    });
+  }
+}
+
 function finish(){
   const raw=document.getElementById('date').value;
   const d=new Date(raw+'T12:00:00');
   const formatted=d.toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+  const time=document.getElementById('time').value;
+  const notifEnabled=document.getElementById('notifCheckbox').checked;
+  
   document.getElementById('summary').innerHTML=
     '<strong>Unsere Auswahl:</strong><br>'+
     activity+'<br>'+
     '📅 '+formatted+'<br>'+
-    '⏰ '+document.getElementById('time').value;
+    '⏰ '+time;
+  
+  if(notifEnabled){
+    if('Notification' in window && Notification.permission === 'granted'){
+      sendNotification(activity, formatted, time);
+    } else if('Notification' in window && Notification.permission === 'default'){
+      Notification.requestPermission().then(permission=>{
+        if(permission === 'granted'){
+          sendNotification(activity, formatted, time);
+        }
+      });
+    }
+  }
+  
   show('result');
 }
+
 function restart(){location.reload()}
+
+window.addEventListener('load', requestNotificationPermission);
 </script>
 </body>
 </html>
