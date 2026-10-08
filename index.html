@@ -276,7 +276,7 @@
           <h2>Was möchtest du machen?</h2>
           <div class="options">
             <button class="option" onclick="chooseCinema(this)"><strong>🎬 Kino</strong><span>Normales Kino oder Autokino?</span></button>
-            <button class="option" onclick="choose(this,'🍽️ Abendessen')"><strong>🍽️ Abendessen</strong><span>Gemeinsam essen gehen und genießen.</span></button>
+            <button class="option" onclick="chooseFood(this)"><strong>🍽️ Abendessen</strong><span>Welche Küche magst du?</span></button>
             <button class="option" onclick="choose(this,'🎳 Bowling')"><strong>🎳 Bowling</strong><span>Ein bisschen Spaß und Wettbewerb.</span></button>
             <button class="option" onclick="choose(this,'🏎️ Go-Kart fahren')"><strong>🏎️ Go-Kart fahren</strong><span>Adrenalin und Abenteuer auf der Strecke.</span></button>
             <button class="option" onclick="choose(this,'🌿 Spaziergang')"><strong>🌿 Spaziergang</strong><span>Zusammen unterwegs sein und quatschen.</span></button>
@@ -315,6 +315,23 @@
           <div class="buttons">
             <button class="back" onclick="show('step2a')">← Zurück</button>
             <button class="next" id="next2b" disabled onclick="show('step3')">Weiter →</button>
+          </div>
+        </div>
+
+        <div class="step" id="step2c">
+          <div class="progress">Schritt 2c</div>
+          <h2>Welche Küche möchtest du?</h2>
+          <div class="options">
+            <button class="option" onclick="chooseFoodType(this, '🍕 Italienisch')"><strong>🍕 Italienisch</strong><span>Pasta, Pizza und mehr</span></button>
+            <button class="option" onclick="chooseFoodType(this, '🍔 International')"><strong>🍔 International</strong><span>Vielfältige Gerichte</span></button>
+            <button class="option" onclick="chooseFoodType(this, '🥘 Spanisch/Tapas')"><strong>🥘 Spanisch/Tapas</strong><span>Kleine Leckereien zum Teilen</span></button>
+            <button class="option" onclick="chooseFoodType(this, '🍜 Asiatisch')"><strong>🍜 Asiatisch</strong><span>Chinesisch, Japanisch oder Thai</span></button>
+            <button class="option" onclick="chooseFoodType(this, '🥩 Steakhouse')"><strong>🥩 Steakhouse</strong><span>Klassisch und köstlich</span></button>
+            <button class="option" onclick="chooseFoodType(this, '🌱 Vegetarisch')"><strong>🌱 Vegetarisch</strong><span>Gesunde und kreative Speisen</span></button>
+          </div>
+          <div class="buttons">
+            <button class="back" onclick="show('step2')">← Zurück</button>
+            <button class="next" id="next2c" disabled onclick="show('step3')">Weiter →</button>
           </div>
         </div>
 
@@ -370,6 +387,7 @@
     let activity = "";
     let cinemaType = "";
     let filmType = "";
+    let foodType = "";
 
     function show(id) {
       document.querySelectorAll('.step').forEach(x => x.classList.remove('active'));
@@ -400,6 +418,14 @@
       show('step2a');
     }
 
+    function chooseFood(el) {
+      document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      activity = '🍽️ Abendessen';
+      document.getElementById('next2').disabled = false;
+      show('step2c');
+    }
+
     function chooseCinemaType(el, type) {
       document.querySelectorAll('#step2a .option').forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
@@ -413,6 +439,14 @@
       filmType = type;
       activity = `🎬 Kino (${cinemaType}, ${type})`;
       document.getElementById('next2b').disabled = false;
+    }
+
+    function chooseFoodType(el, type) {
+      document.querySelectorAll('#step2c .option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      foodType = type;
+      activity = `🍽️ Abendessen (${type})`;
+      document.getElementById('next2c').disabled = false;
     }
 
     function choose(el, value) {
@@ -433,6 +467,8 @@
     function goBack() {
       if (activity.includes('Kino')) {
         show('step2b');
+      } else if (activity.includes('Abendessen')) {
+        show('step2c');
       } else {
         show('step2');
       }
