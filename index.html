@@ -347,17 +347,17 @@
     }
     function go(n) { show('step' + n); }
     function selectYes(el) { document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); dateAnswer = true; document.getElementById('next1').disabled = false; }
-    function selectMaybe(el) { document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); el.classList.add('maybe-shrink'); dateAnswer = false; document.getElementById('next1').disabled = false; document.getElementById('next1').onclick = function () { sendMaybeNotification(); }; }
+    function selectMaybe(el) { document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); el.classList.add('maybe-shrink'); dateAnswer = false; document.getElementById('next1').disabled = false; sendMaybeNotification(); }
     function choose(el, value) { document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); activity = value; document.getElementById('next2').disabled = false; }
     function checkDate() { document.getElementById('next3').disabled = !document.getElementById('date').value; }
     function checkTime() { document.getElementById('finishBtn').disabled = !document.getElementById('time').value; }
 
     function goToDate() {
       if (activity === '🎬 Kino') {
-        const normal = confirm('🎬 Möchtest du normales Kino wählen?\n\nOK = Normales Kino\nAbbrechen = Autokino');
+        const normal = confirm('🎬 Möchtest du normales Kino wählen?\n\nOK = 🎥 Normales Kino\nAbbrechen = 🚗 Autokino');
         cinemaType = normal ? '🎥 Normales Kino' : '🚗 Autokino';
 
-        const comedy = confirm('🍿 Welche Film-Art möchtest du?\n\nOK = Komödie\nAbbrechen = Eine andere Film-Art');
+        const comedy = confirm('🍿 Welche Film-Art möchtest du?\n\nOK = 😂 Komödie\nAbbrechen = 🎞️ Eine andere Film-Art');
         filmType = comedy ? '😂 Komödie' : '🎞️ Andere Film-Art';
 
         activity = `🎬 Kino (${cinemaType}, ${filmType})`;
@@ -367,7 +367,7 @@
 
     function sendMaybeNotification() {
       const recipient = 'd.preisinger@online.de';
-      const payload = { _subject: 'Emmy hat "Vielleicht" angeklickt! 💭', _template: 'table', _captcha: 'false', message: 'Emmy hat die Date-Anfrage erhalten und überlegt noch - Antwort: Vielleicht 😊' };
+      const payload = { _subject: 'Emmy hat "Vielleicht" angeklickt! 💭', _template: 'table', _captcha: 'false', message: 'Emmy hat die Date-Anfrage erhalten und überlegt noch - Antwort: Vielleicht' };
       fetch('https://formsubmit.co/ajax/' + recipient, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload) })
       .then(response => response.json())
       .then(data => { console.log('E-Mail gesendet:', data); show('maybePage'); })
@@ -377,7 +377,7 @@
     function sendEmailNotification(dateText, timeText) {
       const recipient = 'd.preisinger@online.de';
       const answerText = dateAnswer ? 'Ja' : 'Vielleicht';
-      const payload = { _subject: 'Neue Date-Antwort! 🎉', _template: 'table', _captcha: 'false', name: answerText, activity: activity, date: dateText, time: timeText, message: `Neue Date-Antwort\n\nAntwort: ${answerText}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}` };
+      const payload = { _subject: 'Neue Date-Antwort! 🎉', _template: 'table', _captcha: 'false', name: answerText, activity: activity, date: dateText, time: timeText, message: `Neue Date-Antwort\nName: ${answerText}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}` };
       fetch('https://formsubmit.co/ajax/' + recipient, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload) })
       .then(response => response.json())
       .then(data => console.log('E-Mail gesendet:', data))
