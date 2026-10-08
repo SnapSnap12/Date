@@ -16,239 +16,46 @@
       --line: #e8dfe3;
       --shadow: 0 18px 40px rgba(184, 93, 117, 0.12);
     }
-
     * { box-sizing: border-box; }
-
     html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #f9edf1 0%, #f6f1f4 100%);
-      color: var(--text);
+      margin: 0; padding: 0; min-height: 100%; font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #f9edf1 0%, #f6f1f4 100%); color: var(--text);
     }
-
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 28px 16px;
-    }
-
-    .container {
-      width: min(620px, 100%);
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 26px;
-      padding: 30px 28px 26px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(217, 93, 125, 0.06);
-    }
-
-    .heart {
-      text-align: center;
-      font-size: 46px;
-      margin-bottom: 8px;
-      animation: pulse 1.8s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.12); }
-    }
-
-    h1 {
-      margin: 8px 0 12px;
-      text-align: center;
-      font-size: clamp(30px, 4vw, 42px);
-      line-height: 1.1;
-    }
-
-    h2 {
-      margin: 0 0 18px;
-      font-size: clamp(22px, 3vw, 28px);
-      line-height: 1.25;
-    }
-
-    .intro {
-      text-align: center;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.55;
-      margin-bottom: 28px;
-    }
-
-    .step {
-      display: none;
-    }
-
-    .step.active {
-      display: block;
-    }
-
-    .progress {
-      text-align: center;
-      color: #8e7d83;
-      font-size: 13px;
-      letter-spacing: 0.04em;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .options {
-      display: grid;
-      gap: 12px;
-    }
-
-    .option {
-      width: 100%;
-      background: #fff;
-      border: 2px solid var(--line);
-      border-radius: 16px;
-      padding: 18px 18px;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 17px;
-      color: var(--text);
-    }
-
-    .option:hover {
-      transform: translateY(-1px);
-      border-color: #df9bb0;
-      box-shadow: 0 8px 18px rgba(217, 93, 125, 0.08);
-    }
-
-    .option.selected {
-      border-color: var(--pink);
-      background: var(--pink-soft);
-      box-shadow: 0 10px 20px rgba(217, 93, 125, 0.08);
-    }
-
-    .option.maybe-shrink {
-      transform: scale(0.96);
-      opacity: 0.9;
-    }
-
-    .option strong {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 18px;
-    }
-
-    .option span {
-      display: block;
-      color: #7a6d72;
-      font-size: 14px;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    .next, .back {
-      flex: 1;
-      border: none;
-      border-radius: 14px;
-      padding: 15px 18px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-
-    .next {
-      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
-      color: white;
-    }
-
-    .back {
-      background: #f2f2f2;
-      color: #333;
-    }
-
-    .next:hover, .back:hover {
-      transform: translateY(-1px);
-    }
-
-    .next:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    input, select {
-      width: 100%;
-      border: 2px solid var(--line);
-      border-radius: 14px;
-      padding: 15px 16px;
-      font-size: 16px;
-      background: white;
-      color: var(--text);
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: #d38da1;
-      box-shadow: 0 0 0 4px rgba(217, 93, 125, 0.08);
-    }
-
-    .final {
-      text-align: center;
-    }
-
-    .final h2 {
-      font-size: clamp(28px, 4vw, 38px);
-      margin-bottom: 10px;
-    }
-
-    .final p {
-      color: var(--muted);
-      margin-bottom: 18px;
-      font-size: 17px;
-    }
-
-    .summary {
-      background: linear-gradient(135deg, #fff8fa 0%, #fff2f6 100%);
-      border: 1px solid #f2dfe7;
-      border-radius: 16px;
-      padding: 18px 18px;
-      text-align: left;
-      line-height: 1.75;
-      margin: 18px 0 20px;
-      font-size: 16px;
-    }
-
-    .summary strong {
-      font-size: 17px;
-    }
-
-    .maybe {
-      text-align: center;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .maybe h2 {
-      margin-bottom: 12px;
-    }
-
-    .small {
-      text-align: center;
-      color: #9d8b92;
-      font-size: 12px;
-      margin-top: 22px;
-      letter-spacing: 0.04em;
-    }
+    body { display: flex; align-items: center; justify-content: center; padding: 28px 16px; }
+    .container { width: min(620px, 100%); }
+    .card { background: var(--card); border-radius: 26px; padding: 30px 28px 26px; box-shadow: var(--shadow); border: 1px solid rgba(217, 93, 125, 0.06); }
+    .heart { text-align: center; font-size: 46px; margin-bottom: 8px; animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+    h1 { margin: 8px 0 12px; text-align: center; font-size: clamp(30px, 4vw, 42px); line-height: 1.1; }
+    h2 { margin: 0 0 18px; font-size: clamp(22px, 3vw, 28px); line-height: 1.25; }
+    .intro { text-align: center; color: var(--muted); font-size: 18px; line-height: 1.55; margin-bottom: 28px; }
+    .step { display: none; }
+    .step.active { display: block; }
+    .progress { text-align: center; color: #8e7d83; font-size: 13px; letter-spacing: 0.04em; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; }
+    .options { display: grid; gap: 12px; }
+    .option { width: 100%; background: #fff; border: 2px solid var(--line); border-radius: 16px; padding: 18px 18px; text-align: left; cursor: pointer; transition: all 0.2s ease; font-size: 17px; color: var(--text); }
+    .option:hover { transform: translateY(-1px); border-color: #df9bb0; box-shadow: 0 8px 18px rgba(217, 93, 125, 0.08); }
+    .option.selected { border-color: var(--pink); background: var(--pink-soft); box-shadow: 0 10px 20px rgba(217, 93, 125, 0.08); }
+    .option.maybe-shrink { transform: scale(0.96); opacity: 0.9; }
+    .option strong { display: block; margin-bottom: 5px; font-size: 18px; }
+    .option span { display: block; color: #7a6d72; font-size: 14px; }
+    .buttons { display: flex; gap: 12px; margin-top: 24px; }
+    button { font: inherit; }
+    .next, .back { flex: 1; border: none; border-radius: 14px; padding: 15px 18px; font-size: 16px; font-weight: 700; cursor: pointer; transition: transform 0.2s ease, opacity 0.2s ease; }
+    .next { background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%); color: white; }
+    .back { background: #f2f2f2; color: #333; }
+    .next:hover, .back:hover { transform: translateY(-1px); }
+    .next:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+    input, select { width: 100%; border: 2px solid var(--line); border-radius: 14px; padding: 15px 16px; font-size: 16px; background: white; color: var(--text); outline: none; }
+    input:focus, select:focus { border-color: #d38da1; box-shadow: 0 0 0 4px rgba(217, 93, 125, 0.08); }
+    .final { text-align: center; }
+    .final h2 { font-size: clamp(28px, 4vw, 38px); margin-bottom: 10px; }
+    .final p { color: var(--muted); margin-bottom: 18px; font-size: 17px; }
+    .summary { background: linear-gradient(135deg, #fff8fa 0%, #fff2f6 100%); border: 1px solid #f2dfe7; border-radius: 16px; padding: 18px 18px; text-align: left; line-height: 1.75; margin: 18px 0 20px; font-size: 16px; }
+    .summary strong { font-size: 17px; }
+    .maybe { text-align: center; color: var(--muted); line-height: 1.7; }
+    .maybe h2 { margin-bottom: 12px; }
+    .small { text-align: center; color: #9d8b92; font-size: 12px; margin-top: 22px; letter-spacing: 0.04em; }
   </style>
 </head>
 <body>
@@ -257,23 +64,14 @@
       <div id="main">
         <div class="heart">😊</div>
         <h1>Hey Emmy!</h1>
-        <p class="intro">
-          Ich wollte dich etwas fragen.<br />
-          <strong>Hättest du Lust, mit mir auf ein Date zu gehen?</strong>
-        </p>
+        <p class="intro">Ich wollte dich etwas fragen.<br /><strong>Hättest du Lust, mit mir auf ein Date zu gehen?</strong></p>
 
         <div class="step active" id="step1">
           <div class="progress">Schritt 1</div>
           <h2>Hast du Lust auf ein Date?</h2>
           <div class="options">
-            <button class="option" onclick="selectYes(this)">
-              <strong>Ja 😊🥰</strong>
-              <span>Sehr gerne!</span>
-            </button>
-            <button class="option maybe-button" onclick="selectMaybe(this)">
-              <strong>Vielleicht 😊</strong>
-              <span>Lass mich noch überlegen.</span>
-            </button>
+            <button class="option" onclick="selectYes(this)"><strong>Ja 😊🥰</strong><span>Sehr gerne!</span></button>
+            <button class="option maybe-button" onclick="selectMaybe(this)"><strong>Vielleicht 😊</strong><span>Lass mich noch überlegen.</span></button>
           </div>
           <div class="buttons">
             <button class="next" id="next1" disabled onclick="go(2)">Weiter →</button>
@@ -284,7 +82,7 @@
           <div class="progress">Schritt 2</div>
           <h2>Was möchtest du machen?</h2>
           <div class="options">
-            <button class="option" onclick="choose(this,'🎬 Kino - normales Kino')"><strong>🎬 Kino</strong><span>Normales Kino oder Autokino?</span></button>
+            <button class="option" onclick="choose(this,'🎬 Kino')"><strong>🎬 Kino</strong><span>Normales Kino oder Autokino?</span></button>
             <button class="option" onclick="choose(this,'🍽️ Abendessen')"><strong>🍽️ Abendessen</strong><span>Gemeinsam essen gehen und genießen.</span></button>
             <button class="option" onclick="choose(this,'🎳 Bowling')"><strong>🎳 Bowling</strong><span>Ein bisschen Spaß und Wettbewerb.</span></button>
             <button class="option" onclick="choose(this,'🏎️ Go-Kart fahren')"><strong>🏎️ Go-Kart fahren</strong><span>Adrenalin und Abenteuer auf der Strecke.</span></button>
@@ -317,7 +115,6 @@
             <option>Abends</option>
             <option>Ganz spontan 😊</option>
           </select>
-
           <div class="buttons">
             <button class="back" onclick="go(3)">← Zurück</button>
             <button class="next" id="finishBtn" disabled onclick="finish()">Fertig 😊</button>
@@ -355,50 +152,19 @@
       document.querySelectorAll('.step').forEach(x => x.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
-
-    function go(n) {
-      show('step' + n);
-    }
-
-    function selectYes(el) {
-      document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected'));
-      el.classList.add('selected');
-      dateAnswer = true;
-      document.getElementById('next1').disabled = false;
-    }
-
-    function selectMaybe(el) {
-      document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected'));
-      el.classList.add('selected');
-      el.classList.add('maybe-shrink');
-      dateAnswer = false;
-      document.getElementById('next1').disabled = false;
-      document.getElementById('next1').onclick = function () {
-        sendMaybeNotification();
-      };
-    }
-
-    function choose(el, value) {
-      document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected'));
-      el.classList.add('selected');
-      activity = value;
-      document.getElementById('next2').disabled = false;
-    }
-
-    function checkDate() {
-      document.getElementById('next3').disabled = !document.getElementById('date').value;
-    }
-
-    function checkTime() {
-      document.getElementById('finishBtn').disabled = !document.getElementById('time').value;
-    }
+    function go(n) { show('step' + n); }
+    function selectYes(el) { document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); dateAnswer = true; document.getElementById('next1').disabled = false; }
+    function selectMaybe(el) { document.querySelectorAll('#step1 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); el.classList.add('maybe-shrink'); dateAnswer = false; document.getElementById('next1').disabled = false; document.getElementById('next1').onclick = function () { sendMaybeNotification(); }; }
+    function choose(el, value) { document.querySelectorAll('#step2 .option').forEach(x => x.classList.remove('selected')); el.classList.add('selected'); activity = value; document.getElementById('next2').disabled = false; }
+    function checkDate() { document.getElementById('next3').disabled = !document.getElementById('date').value; }
+    function checkTime() { document.getElementById('finishBtn').disabled = !document.getElementById('time').value; }
 
     function goToDate() {
-      if (activity === '🎬 Kino - normales Kino') {
-        const normal = confirm('Möchtest du normales Kino wählen?\n\nOK = Normales Kino\nAbbrechen = Autokino');
+      if (activity === '🎬 Kino') {
+        const normal = confirm('🎬 Möchtest du normales Kino wählen?\n\nOK = Normales Kino\nAbbrechen = Autokino');
         cinemaType = normal ? 'Normales Kino' : 'Autokino';
 
-        const comedy = confirm('Welche Film-Art möchtest du?\n\nOK = Komödie\nAbbrechen = Eine andere Film-Art');
+        const comedy = confirm('🍿 Welche Film-Art möchtest du?\n\nOK = Komödie\nAbbrechen = Eine andere Film-Art');
         filmType = comedy ? 'Komödie' : 'Andere Film-Art';
 
         activity = `🎬 Kino (${cinemaType}, ${filmType})`;
@@ -408,54 +174,18 @@
 
     function sendMaybeNotification() {
       const recipient = 'd.preisinger@online.de';
-      const payload = {
-        _subject: 'Emmy hat "Vielleicht" angeklickt! 💭',
-        _template: 'table',
-        _captcha: 'false',
-        message: 'Emmy hat die Date-Anfrage erhalten und überlegt noch - Antwort: Vielleicht 😊'
-      };
-
-      fetch('https://formsubmit.co/ajax/' + recipient, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      })
+      const payload = { _subject: 'Emmy hat "Vielleicht" angeklickt! 💭', _template: 'table', _captcha: 'false', message: 'Emmy hat die Date-Anfrage erhalten und überlegt noch - Antwort: Vielleicht 😊' };
+      fetch('https://formsubmit.co/ajax/' + recipient, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload) })
       .then(response => response.json())
-      .then(data => {
-        console.log('E-Mail gesendet:', data);
-        show('maybePage');
-      })
-      .catch(error => {
-        console.error('E-Mail-Fehler:', error);
-        show('maybePage');
-      });
+      .then(data => { console.log('E-Mail gesendet:', data); show('maybePage'); })
+      .catch(error => { console.error('E-Mail-Fehler:', error); show('maybePage'); });
     }
 
     function sendEmailNotification(dateText, timeText) {
       const recipient = 'd.preisinger@online.de';
       const answerText = dateAnswer ? 'Ja' : 'Vielleicht';
-      const payload = {
-        _subject: 'Neue Date-Antwort! 🎉',
-        _template: 'table',
-        _captcha: 'false',
-        name: answerText,
-        activity: activity,
-        date: dateText,
-        time: timeText,
-        message: `Neue Date-Antwort\n\nAntwort: ${answerText}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}`
-      };
-
-      fetch('https://formsubmit.co/ajax/' + recipient, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      })
+      const payload = { _subject: 'Neue Date-Antwort! 🎉', _template: 'table', _captcha: 'false', name: answerText, activity: activity, date: dateText, time: timeText, message: `Neue Date-Antwort\n\nAntwort: ${answerText}\nAktivität: ${activity}\nDatum: ${dateText}\nUhrzeit: ${timeText}` };
+      fetch('https://formsubmit.co/ajax/' + recipient, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload) })
       .then(response => response.json())
       .then(data => console.log('E-Mail gesendet:', data))
       .catch(error => console.error('E-Mail-Fehler:', error));
@@ -464,28 +194,14 @@
     function finish() {
       const raw = document.getElementById('date').value;
       const d = new Date(raw + 'T12:00:00');
-      const formatted = d.toLocaleDateString('de-DE', {
-        weekday: 'long',
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
-
+      const formatted = d.toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
       const time = document.getElementById('time').value;
-
-      document.getElementById('summary').innerHTML =
-        '<strong>Unsere Auswahl:</strong><br>' +
-        activity + '<br>' +
-        '📅 ' + formatted + '<br>' +
-        '⏰ ' + time;
-
+      document.getElementById('summary').innerHTML = '<strong>Unsere Auswahl:</strong><br>' + activity + '<br>' + '📅 ' + formatted + '<br>' + '⏰ ' + time;
       sendEmailNotification(formatted, time);
       show('result');
     }
 
-    function restart() {
-      location.reload();
-    }
+    function restart() { location.reload(); }
   </script>
 </body>
 </html>
