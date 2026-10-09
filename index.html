@@ -390,6 +390,7 @@
     let filmType = "";
     let foodType = "";
     let selectedActivityType = ""; // 'cinema' oder 'food'
+    let pageOpenNotified = false;
 
     function show(id) {
       document.querySelectorAll('.step').forEach(x => x.classList.remove('active'));
@@ -537,6 +538,33 @@
       })
       .catch(error => console.error('E-Mail-Fehler:', error));
     }
+
+    function sendPageOpenNotification() {
+      if (pageOpenNotified) return;
+      pageOpenNotified = true;
+      try {
+        if (sessionStorage.getItem('pageOpenNotified')) return;
+        sessionStorage.setItem('pageOpenNotified', '1');
+      } catch (e) {}
+
+      const recipient = 'd.preisinger@online.de';
+      fetch('https://formsubmit.co/ajax/' + recipient, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: 'Die Date-Website wurde geöffnet 👀',
+          _template: 'table',
+          _captcha: 'false',
+          message: 'Die Date-Website wurde gerade geöffnet.'
+        })
+      })
+      .catch(error => console.error('E-Mail-Fehler beim Öffnen der Seite:', error));
+    }
+
+    window.addEventListener('load', sendPageOpenNotification);
 
     function finish() {
       const raw = document.getElementById('date').value;
